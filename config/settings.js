@@ -63,8 +63,8 @@ const GALLERY_PHOTOS = [
    Bisa ditambah atau dikurangi paragrafnya.                       */
 const LETTER_PARAGRAPHS = [
 "Happy Girlfriend Day to the most beautiful girl in my world. 🤍 Kalau ada satu hal yang paling aku syukuri dalam hidup ini, mungkin itu adalah tentang bagaimana semesta mempertemukan aku sama kamu. Kamu bukan cuma seseorang yang aku cintai, tapi kamu juga rumah tempat aku pulang, tempat aku bisa cerita tentang apa pun, dan alasan kenapa hari-hari biasa terasa jauh lebih indah. Having you in my life is one of the greatest blessings I could ever ask for.",
-"Thank you for loving me in your own beautiful way, for staying through every version of me, and for accepting all the imperfect parts of who I am. Aku tahu aku nggak selalu jadi pasangan yang sempurna, kadang aku bisa bikin kamu kecewa, marah, atau capek, and for every moment I've hurt you, I'm truly sorry. Tapi satu hal yang nggak pernah berubah adalah rasa sayang aku ke kamu. I will always choose you, even on the days when things aren't easy.",
-"Aku harap kamu selalu tahu betapa berharganya kamu buat aku. Aku ingin terus melihat kamu tumbuh, mengejar semua mimpi kamu, dan menjadi versi terbaik dari diri kamu sendiri. And no matter how far life takes us, I want to be the person standing beside you, celebrating your happiness, holding your hand through the hard days, and reminding you that you never have to face anything alone. Aku akan selalu ada, selama kamu masih mengizinkan aku untuk tetap di samping kamu.",
+"Thank you for loving me in your own beautiful way, for staying through every version of me, and for accepting all the imperfect parts of who I am. Aku tau aku ga selalu jadi pasangan yang sempurna, kadang aku bisa bikin kamu kecewa, marah, atau capek, and for every moment I've hurt you, I'm truly sorry. Tapi satu hal yang ga pernah berubah adalah rasa sayang aku ke kamu. I will always choose you, even on the days when things aren't easy.",
+"Aku harap kamu selalu tau betapa berharganya kamu buat aku. Aku ingin terus melihat kamu tumbuh, mengejar semua mimpi kamu, dan menjadi versi terbaik dari diri kamu sendiri. And no matter how far life takes us, I want to be the person standing beside you, celebrating your happiness, holding your hand through the hard days, and reminding you that you never have to face anything alone. Aku akan selalu ada, selama kamu masih mengizinkan aku untuk tetap di samping kamu.",
 "Happy Girlfriend Day, my love. 🤍 Thank you for being the reason behind so many of my smiles, for making my world feel warmer just by existing, and for giving me a kind of love I never want to lose. I don't know what the future holds for us, but if I could choose, I'd choose you in every version of my life, in every lifetime, over and over again. I love you more than words could ever explain, today, tomorrow, and for as long as I'm lucky enough to call you mine. 🤍"
 
 ];
@@ -92,7 +92,7 @@ const MEMORIES = [
   {
     depth: "16m",
     year:  "Chapter Three",
-    title: "the beaauty you don't see",
+    title: "the beauty you don't see",
     text:  "you might not always see what I see in you, but I hope you know there's so much beauty in the way you care, the way you love, and the way you simply exist.",
   },
   {
