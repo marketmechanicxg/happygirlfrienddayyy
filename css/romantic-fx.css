@@ -1,0 +1,142 @@
+/* ==========================================================================
+   ROMANTIC FX — "Living Romantic Background" supplemental layers.
+   Purely additive to the existing ocean-backdrop (glows, waves, caustics,
+   particle canvas, fog, vignette are untouched). Adds a handful of cheap,
+   CSS-only, GPU-composited elements for extra depth: floating translucent
+   bubbles, two extra slow-drifting soft light blobs, and a pair of subtle
+   dreamy ribbons. Mirrors the same technique already used for the PIN
+   screen's bubbles (transform + opacity keyframes, no JS, no layout impact)
+   so it stays light on both desktop and mobile.
+   ========================================================================== */
+
+.ocean-backdrop__bubbles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.rb-bubble {
+  position: absolute;
+  bottom: -12%;
+  left: var(--x, 50%);
+  width: var(--sz, 10px);
+  height: var(--sz, 10px);
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 28%, rgba(255, 255, 255, 0.8), rgba(255, 207, 228, 0.22) 68%, transparent 100%);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 0 10px rgba(255, 194, 221, 0.28);
+  filter: blur(var(--bl, 0px));
+  animation: rbBubbleRise var(--sp, 16s) var(--ease-in-out, ease-in-out) infinite;
+  animation-delay: var(--dl, 0s);
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+@keyframes rbBubbleRise {
+  0%   { transform: translate3d(0, 0, 0) scale(0.9); opacity: 0; }
+  10%  { opacity: var(--op, 0.6); }
+  50%  { transform: translate3d(var(--drift, 12px), -58vh, 0) scale(1.04); }
+  88%  { opacity: calc(var(--op, 0.6) * 0.7); }
+  100% { transform: translate3d(calc(var(--drift, 12px) * 1.8), -118vh, 0) scale(0.96); opacity: 0; }
+}
+
+/* ---- Two extra soft blobs, slower + larger than the core ocean-glow set,
+   pure cream/blush light rather than saturated pink, to add atmosphere
+   without competing with foreground content. ---- */
+.ocean-backdrop__soft-blobs {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+.rb-blob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(95px);
+  will-change: transform;
+  mix-blend-mode: screen;
+}
+
+.rb-blob--1 {
+  width: 32vw; height: 32vw; min-width: 300px; min-height: 300px; max-width: 520px; max-height: 520px;
+  top: 30%; left: 38%;
+  background: radial-gradient(circle, rgba(255, 248, 242, 0.1), transparent 72%);
+  animation: rbBlobDrift1 32s var(--ease-in-out) infinite;
+}
+
+.rb-blob--2 {
+  width: 26vw; height: 26vw; min-width: 240px; min-height: 240px; max-width: 420px; max-height: 420px;
+  bottom: 20%; right: 30%;
+  background: radial-gradient(circle, rgba(255, 175, 205, 0.14), transparent 72%);
+  animation: rbBlobDrift2 40s var(--ease-in-out) infinite;
+}
+
+@keyframes rbBlobDrift1 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(-4vw, 3vh) scale(1.1); }
+}
+@keyframes rbBlobDrift2 {
+  0%, 100% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(3vw, -3vh) scale(1.07); }
+}
+
+/* ---- A pair of very faint dreamy ribbons — barely-there streaks of light
+   drifting diagonally, purely atmospheric. ---- */
+.ocean-backdrop__ribbons {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  mix-blend-mode: screen;
+  opacity: 0.5;
+}
+
+.rb-ribbon {
+  position: absolute;
+  width: 160%;
+  height: 46px;
+  left: -30%;
+  background: linear-gradient(90deg, transparent, rgba(255, 207, 228, 0.16) 35%, rgba(255, 248, 242, 0.12) 55%, transparent 90%);
+  filter: blur(12px);
+  will-change: transform;
+}
+
+.rb-ribbon--1 { top: 22%; transform: rotate(-8deg); animation: rbRibbonDrift1 26s ease-in-out infinite; }
+.rb-ribbon--2 { top: 68%; transform: rotate(6deg);  animation: rbRibbonDrift2 33s ease-in-out infinite; }
+
+@keyframes rbRibbonDrift1 {
+  0%, 100% { transform: rotate(-8deg) translateX(0); }
+  50% { transform: rotate(-6deg) translateX(4vw); }
+}
+@keyframes rbRibbonDrift2 {
+  0%, 100% { transform: rotate(6deg) translateX(0); }
+  50% { transform: rotate(8deg) translateX(-4vw); }
+}
+
+/* ---- Performance gating: trims the supplemental layers first, leaving
+   the core petals/hearts/particle canvas (already perf-tiered in JS)
+   as the main romantic signal on low-power devices. ---- */
+html.perf-low .rb-blob--2,
+html.perf-low .ocean-backdrop__ribbons,
+html.perf-low .rb-bubble:nth-child(n+7) {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  .ocean-backdrop__ribbons { display: none; }
+  .rb-blob { filter: blur(60px); }
+  .rb-bubble:nth-child(n+9) { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .rb-bubble, .rb-blob, .rb-ribbon { animation: none !important; opacity: 0 !important; }
+}
+
+html.reduced-motion .rb-bubble,
+html.reduced-motion .rb-blob,
+html.reduced-motion .rb-ribbon {
+  animation: none !important;
+  opacity: 0 !important;
+}

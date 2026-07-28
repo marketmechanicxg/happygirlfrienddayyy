@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Happy Girlfriend Day — A Letter From the Heart</title>
+<meta name="description" content="A little Girlfriend Day tribute, made just for you.">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,500&family=Outfit:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<link rel="stylesheet" href="css/variables.css">
+<link rel="stylesheet" href="css/reset.css">
+<link rel="stylesheet" href="css/typography.css">
+<link rel="stylesheet" href="css/layout.css">
+<link rel="stylesheet" href="css/navbar.css">
+<link rel="stylesheet" href="css/hero.css">
+<link rel="stylesheet" href="css/memories.css">
+<link rel="stylesheet" href="css/gallery.css">
+<link rel="stylesheet" href="css/letter.css">
+<link rel="stylesheet" href="css/wishes.css">
+<link rel="stylesheet" href="css/ending.css">
+<link rel="stylesheet" href="css/loader-player.css">
+<link rel="stylesheet" href="css/effects.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/ocean-depth-fx.css">
+<link rel="stylesheet" href="css/romantic-fx.css">
+<link rel="stylesheet" href="css/pin-lock.css">
+<link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+<!-- Shared SVG filter for the subtle water-distortion effect on the
+     caustics/wave layers (high-perf desktop only — see ocean-depth-fx.css) -->
+<svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+  <defs>
+    <filter id="oceanRipple" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.012 0.018" numOctaves="2" seed="7" result="noise">
+        <animate attributeName="baseFrequency" dur="16s" values="0.010 0.016;0.016 0.022;0.010 0.016" repeatCount="indefinite" />
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="20" xChannelSelector="R" yChannelSelector="G" />
+    </filter>
+  </defs>
+</svg>
+
+<!-- ============================= PIN LOCK SCREEN ============================= -->
+<div class="pin-lock" id="pinLock" role="dialog" aria-modal="true" aria-label="Enter your secret code">
+  <div class="pin-lock__atmosphere" aria-hidden="true">
+    <span class="pin-lock__glow pin-lock__glow--1"></span>
+    <span class="pin-lock__glow pin-lock__glow--2"></span>
+    <span class="pin-lock__bubble" style="--x:8%;  --sz:7px; --sp:11s;   --dl:0s"></span>
+    <span class="pin-lock__bubble" style="--x:18%; --sz:4px; --sp:9s;    --dl:1.2s"></span>
+    <span class="pin-lock__bubble" style="--x:30%; --sz:9px; --sp:13s;   --dl:2.4s"></span>
+    <span class="pin-lock__bubble" style="--x:46%; --sz:5px; --sp:8s;    --dl:0.6s"></span>
+    <span class="pin-lock__bubble" style="--x:58%; --sz:8px; --sp:12s;   --dl:3.1s"></span>
+    <span class="pin-lock__bubble" style="--x:70%; --sz:4px; --sp:10s;   --dl:1.8s"></span>
+    <span class="pin-lock__bubble" style="--x:82%; --sz:6px; --sp:14s;   --dl:4s"></span>
+    <span class="pin-lock__bubble" style="--x:92%; --sz:5px; --sp:9.5s;  --dl:2s"></span>
+  </div>
+
+  <div class="pin-lock__card">
+    <div class="pin-lock__mark" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+        <path d="M12 3c4.5 0 8 4 8 9a8 8 0 01-16 0c0-5 3.5-9 8-9z"/>
+        <path d="M9 11.5l1.6 1.6L15 9" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <span class="eyebrow pin-lock__eyebrow">For your eyes only</span>
+    <h1 class="pin-lock__title">Enter Your Secret Code</h1>
+    <p class="pin-lock__subtitle">Something has been waiting just past the surface, only for you.</p>
+
+    <form class="pin-lock__form" id="pinForm" autocomplete="off" novalidate>
+      <div class="pin-lock__digits" id="pinDigits">
+        <input type="text" inputmode="numeric" pattern="[0-9]*" id="pinHiddenInput" class="pin-lock__hidden-input" autocomplete="one-time-code" aria-label="Secret code">
+      </div>
+      <button type="submit" class="pin-lock__submit">
+        <span>Unlock it</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </button>
+    </form>
+
+    <p class="pin-lock__error" id="pinError" role="alert" aria-live="assertive">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.3 3.9L2.7 17a2 2 0 001.7 3h15.2a2 2 0 001.7-3L13.7 3.9a2 2 0 00-3.4 0z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      Wrong PIN, try again babe.
+    </p>
+  </div>
+</div>
+
+<a href="#hero" class="skip-link">Skip to content</a>
+
+<!-- ============================= LOADING SCREEN ============================= -->
+<div class="loader" role="status" aria-live="polite">
+  <svg class="loader__mark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4">
+    <path d="M12 3c4.5 0 8 4 8 9a8 8 0 01-16 0c0-5 3.5-9 8-9z"/>
+    <path d="M12 7v10M9 9l3 3-3 3M15 9l-3 3 3 3" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <div class="loader__bar-track"><div class="loader__bar-fill"></div></div>
+  <p class="loader__label"><span>Charting the depths for you</span><span class="loader__pct">0%</span></p>
+</div>
+
+<!-- ============================= SCROLL PROGRESS ============================= -->
+<div class="scroll-progress"></div>
+
+<!-- ============================= DEPTH RAIL ============================= -->
+<div class="depth-rail" aria-hidden="true">
+  <span class="depth-rail__value">0m</span>
+  <div class="depth-rail__track"><div class="depth-rail__fill"></div></div>
+</div>
+
+<!-- ============================= AMBIENT BACKDROP (fixed, shared) ============================= -->
+<div class="ocean-backdrop" aria-hidden="true">
+  <div class="ocean-backdrop__glows">
+    <span class="ocean-glow ocean-glow--1"></span>
+    <span class="ocean-glow ocean-glow--2"></span>
+    <span class="ocean-glow ocean-glow--3"></span>
+  </div>
+  <div class="ocean-backdrop__waves" aria-hidden="true">
+    <div class="wave-layer wave-layer--1">
+      <div class="wave-layer__scroll">
+        <svg viewBox="0 0 2880 220" preserveAspectRatio="none">
+          <path fill="rgba(255,194,221,0.16)" d="M0,110 C240,150 480,70 720,110 C960,150 1200,70 1440,110 C1680,150 1920,70 2160,110 C2400,150 2640,70 2880,110 L2880,220 L0,220 Z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="wave-layer wave-layer--2">
+      <div class="wave-layer__scroll">
+        <svg viewBox="0 0 2880 220" preserveAspectRatio="none">
+          <path fill="rgba(255,143,189,0.22)" d="M0,130 C240,180 480,80 720,130 C960,180 1200,80 1440,130 C1680,180 1920,80 2160,130 C2400,180 2640,80 2880,130 L2880,220 L0,220 Z"/>
+        </svg>
+      </div>
+    </div>
+    <div class="wave-layer wave-layer--3">
+      <div class="wave-layer__scroll">
+        <svg viewBox="0 0 2880 220" preserveAspectRatio="none">
+          <path fill="rgba(255,248,242,0.14)" stroke="rgba(255,194,221,0.35)" stroke-width="1.5" d="M0,150 C120,190 240,110 360,150 C480,190 600,110 720,150 C840,190 960,110 1080,150 C1200,190 1320,110 1440,150 C1560,190 1680,110 1800,150 C1920,190 2040,110 2160,150 C2280,190 2400,110 2520,150 C2640,190 2760,110 2880,150 L2880,220 L0,220 Z"/>
+        </svg>
+      </div>
+    </div>
+  </div>
+  <div class="ocean-backdrop__caustics" aria-hidden="true"></div>
+  <div class="ocean-backdrop__rays">
+    <span class="light-ray light-ray--1"></span>
+    <span class="light-ray light-ray--2"></span>
+    <span class="light-ray light-ray--3"></span>
+  </div>
+  <canvas id="oceanCanvas" class="ocean-backdrop__particles"></canvas>
+  <div class="ocean-backdrop__fog" aria-hidden="true">
+    <span class="ocean-fog ocean-fog--1"></span>
+    <span class="ocean-fog ocean-fog--2"></span>
+  </div>
+
+  <!-- Living Romantic Background — supplemental atmosphere layers.
+       Additive only: petals/hearts/sparkles live on #oceanCanvas above,
+       these are cheap CSS-only bubbles, extra soft light blobs, and
+       faint dreamy ribbons for extra depth. -->
+  <div class="ocean-backdrop__soft-blobs" aria-hidden="true">
+    <span class="rb-blob rb-blob--1"></span>
+    <span class="rb-blob rb-blob--2"></span>
+  </div>
+  <div class="ocean-backdrop__ribbons" aria-hidden="true">
+    <span class="rb-ribbon rb-ribbon--1"></span>
+    <span class="rb-ribbon rb-ribbon--2"></span>
+  </div>
+  <div class="ocean-backdrop__bubbles" aria-hidden="true">
+    <span class="rb-bubble" style="--x:6%;  --sz:8px;  --sp:15s; --dl:0s;   --drift:16px; --op:0.55;"></span>
+    <span class="rb-bubble" style="--x:16%; --sz:5px;  --sp:12s; --dl:2.1s; --drift:-10px; --op:0.5;"></span>
+    <span class="rb-bubble" style="--x:27%; --sz:11px; --sp:19s; --dl:4.4s; --drift:22px; --op:0.6; --bl:0.5px;"></span>
+    <span class="rb-bubble" style="--x:38%; --sz:6px;  --sp:13s; --dl:1s;   --drift:-14px; --op:0.45;"></span>
+    <span class="rb-bubble" style="--x:49%; --sz:9px;  --sp:17s; --dl:3.3s; --drift:18px; --op:0.55;"></span>
+    <span class="rb-bubble" style="--x:60%; --sz:4px;  --sp:11s; --dl:0.6s; --drift:-8px; --op:0.4;"></span>
+    <span class="rb-bubble" style="--x:71%; --sz:10px; --sp:18s; --dl:5s;   --drift:20px; --op:0.6; --bl:0.5px;"></span>
+    <span class="rb-bubble" style="--x:81%; --sz:6px;  --sp:14s; --dl:2.7s; --drift:-16px; --op:0.5;"></span>
+    <span class="rb-bubble" style="--x:90%; --sz:8px;  --sp:16s; --dl:4s;   --drift:12px; --op:0.5;"></span>
+    <span class="rb-bubble" style="--x:95%; --sz:5px;  --sp:12.5s; --dl:1.6s; --drift:-10px; --op:0.45;"></span>
+  </div>
+
+  <div class="ocean-backdrop__vignette"></div>
+</div>
+
+<!-- ============================= NAVBAR ============================= -->
+<header class="navbar">
+  <div class="navbar__inner">
+    <a href="#hero" class="navbar__brand" data-scroll-to="hero">
+      <svg class="navbar__brand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M2 16c2 0 2-2 4-2s2 2 4 2 2-2 4-2 2 2 4 2 2-2 4-2" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="12" cy="8" r="3.2"/>
+      </svg>
+      <span>Happy Girlfriend Day</span>
+    </a>
+    <nav class="navbar__links" aria-label="Primary">
+      <a href="#hero" class="navbar__link is-active" data-scroll-to="hero">Surface</a>
+      <a href="#memories" class="navbar__link" data-scroll-to="memories">Our Memories</a>
+      <a href="#gallery" class="navbar__link" data-scroll-to="gallery">Gallery</a>
+      <a href="#letter" class="navbar__link" data-scroll-to="letter">The Letter</a>
+      <a href="#wishes" class="navbar__link" data-scroll-to="wishes">Wishes</a>
+    </nav>
+    <div class="navbar__actions">
+      <button class="navbar__menu-btn" aria-label="Open menu" aria-expanded="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 6h18M3 12h18M3 18h18" stroke-linecap="round"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- ============================= MOBILE NAV DRAWER ============================= -->
+<div class="nav-drawer" role="dialog" aria-modal="true" aria-label="Site navigation">
+  <button class="nav-drawer__close" aria-label="Close menu">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+  </button>
+  <a href="#hero" class="nav-drawer__link is-active" data-scroll-to="hero">Surface</a>
+  <a href="#memories" class="nav-drawer__link" data-scroll-to="memories">Our Memories</a>
+  <a href="#gallery" class="nav-drawer__link" data-scroll-to="gallery">Gallery</a>
+  <a href="#letter" class="nav-drawer__link" data-scroll-to="letter">The Letter</a>
+  <a href="#wishes" class="nav-drawer__link" data-scroll-to="wishes">Wishes</a>
+</div>
+
+<main>
+
+  <!-- ============================= HERO ============================= -->
+  <section id="hero" class="section hero">
+    <div class="hero__glow hero__glow--1" aria-hidden="true"></div>
+    <div class="hero__glow hero__glow--2" aria-hidden="true"></div>
+    <div class="hero__content">
+      <span class="eyebrow hero__eyebrow">A message carried in on the tide, for you</span>
+      <h1 class="hero__title">
+        <span class="line"><span>Happy Girlfriend Day,</span></span>
+        <span class="line"><span><em>My Favorite Person</em></span></span>
+      </h1>
+      <p class="hero__subtitle">
+        Somewhere past the breakers, there's a letter that's been waiting for the right moment to find its way to
+        <span class="hero__name">you</span>. Scroll down — the tide is coming in, and it's carrying every reason you're the best part of my story.
+      </p>
+      <div class="hero__actions">
+        <a href="#memories" class="cta-btn" data-scroll-to="memories">
+          <span>Begin the Descent</span>
+          <svg class="cta-btn__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </a>
+        <a href="#letter" class="cta-btn cta-btn--ghost" data-scroll-to="letter">Jump Straight to the Letter</a>
+      </div>
+    </div>
+    <div class="hero__scroll-cue">
+      <div class="mouse"></div>
+      <span>Scroll to dive in</span>
+    </div>
+  </section>
+
+  <div class="seam seam--mid" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path class="seam__fill" d="M0,32 C240,80 480,0 720,32 C960,64 1200,16 1440,40 L1440,80 L0,80 Z"/>
+      <path class="seam__crest" d="M0,32 C240,80 480,0 720,32 C960,64 1200,16 1440,40" fill="none"/>
+    </svg>
+  </div>
+
+  <!-- ============================= MEMORIES ============================= -->
+  <section id="memories" class="section memories">
+    <div class="section__inner">
+      <div class="section-header reveal">
+        <span class="eyebrow">for the girl i adore</span>
+        <h2 class="section-title">a glimpse of <em>your beauty</em></h2>
+        <p class="section-lede">There are so many beautiful things about you, some I could put into words, and some I could only feel. This is just a little collection of the things that make you, you.1</p>
+      </div>
+
+      <div class="memories__list">
+        <!-- spine + memory-item nodes injected by js/main.js from config/settings.js -->
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= GALLERY ============================= -->
+  <section id="gallery" class="section gallery">
+    <div class="section__inner">
+      <div class="section-header section-header--center reveal">
+        <span class="eyebrow">Washed ashore, just for you</span>
+        <h2 class="section-title">A few of <em>my favorite shots of you</em></h2>
+        <p class="section-lede">Tap any photo to look closer.</p>
+      </div>
+
+      <div class="gallery__grid">
+        <!-- gallery__item tiles injected by js/gallery.js from config/settings.js -->
+      </div>
+    </div>
+  </section>
+
+  <div class="seam seam--deep" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path class="seam__fill" d="M0,40 C240,8 480,72 720,40 C960,8 1200,56 1440,24 L1440,80 L0,80 Z"/>
+      <path class="seam__crest" d="M0,40 C240,8 480,72 720,40 C960,8 1200,56 1440,24" fill="none"/>
+    </svg>
+  </div>
+
+  <!-- ============================= LETTER ============================= -->
+  <section id="letter" class="section letter">
+    <div class="section__inner section__inner--narrow">
+      <div class="letter__inner">
+        <div class="section-header section-header--center reveal">
+          <span class="eyebrow">A bottle, finally ashore for you</span>
+          <h2 class="section-title">Open when <em>found</em></h2>
+        </div>
+
+        <div class="letter__bottle-stage reveal reveal--scale" tabindex="0" role="button" aria-label="Open the letter">
+          <div class="letter__bottle-glow" aria-hidden="true"></div>
+          <svg class="bottle" viewBox="0 0 120 160" fill="none">
+            <path d="M50 10h20v18c10 6 16 18 16 32v68a14 14 0 01-14 14H48a14 14 0 01-14-14V60c0-14 6-26 16-32z"
+                  fill="rgba(255,194,221,0.14)" stroke="#ffc2dd" stroke-width="2"/>
+            <rect x="48" y="6" width="24" height="14" rx="3" fill="#4a1a30" stroke="#ffc2dd" stroke-width="1.5"/>
+            <path d="M40 90c4 6 36 6 40 0v40a8 8 0 01-8 8H48a8 8 0 01-8-8z" fill="rgba(243,207,158,0.5)"/>
+            <rect x="44" y="74" width="32" height="10" rx="2" fill="#fff8f2" opacity="0.85" transform="rotate(-4 60 79)"/>
+          </svg>
+          <p class="letter__hint">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Tap the bottle to open it
+          </p>
+        </div>
+
+        <div class="letter__panel">
+          <p class="letter__salutation">My love,</p>
+          <div class="letter__body"><!-- typewritten in by js/letter.js --></div>
+          <p class="letter__signature">— with every piece of my heart, always</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= WISHES ============================= -->
+  <section id="wishes" class="section wishes">
+    <div class="section__inner">
+      <div class="section-header section-header--center reveal">
+        <span class="eyebrow">Sent with the current, for you</span>
+        <h2 class="section-title">Wishes for <em>the year ahead</em></h2>
+      </div>
+
+      <div class="wishes__grid">
+        <!-- wish-card items injected by js/main.js from config/settings.js -->
+      </div>
+    </div>
+  </section>
+
+  <div class="seam seam--abyss" aria-hidden="true">
+    <svg viewBox="0 0 1440 80" preserveAspectRatio="none">
+      <path class="seam__fill" d="M0,24 C240,64 480,8 720,40 C960,72 1200,16 1440,48 L1440,80 L0,80 Z"/>
+      <path class="seam__crest" d="M0,24 C240,64 480,8 720,40 C960,72 1200,16 1440,48" fill="none"/>
+    </svg>
+  </div>
+
+  <!-- ============================= ENDING ============================= -->
+  <section id="ending" class="section ending">
+    <div class="ending__inner reveal">
+      <span class="eyebrow">Resurfacing, almost there</span>
+      <h2 class="ending__title">Happy Girlfriend Day, <em>my love</em>.</h2>
+      <p class="ending__message">
+        Thank you for letting me make a little fuss over you today.
+        Thank you for giving me every reason to make this day feel just a little more special for you.
+        Here's to more good tides ahead, more stories worth telling, and all the small, quiet days
+        that somehow end up meaning the most.
+        May every good thing find its way to you slowly and surely, and may you keep shining exactly
+        the way you always do.
+      </p>
+      <div class="ending__candles" aria-hidden="true">
+        <div class="candle"></div><div class="candle"></div><div class="candle"></div><div class="candle"></div><div class="candle"></div>
+      </div>
+      <p class="ending__signoff">Here's to us, always.</p>
+      
+      <div class="ending__whatsapp" style="opacity: 0; pointer-events: none; transform: translateY(20px);">
+        <a href="#" id="whatsapp-reply-btn" target="_blank" class="cta-btn">
+          <svg class="cta-btn__icon" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/>
+          </svg>
+          Send a reply
+        </a>
+      </div>
+      <div class="ending__replay">
+        <button class="cta-btn cta-btn--ghost" data-replay>
+          <span>Float Back to the Surface</span>
+          <svg class="cta-btn__icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 19V5M5 12l7-7 7 7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+      <p class="ending__footer-note">Made with so much care · <span data-current-year>2026</span></p>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============================= GALLERY LIGHTBOX =============================
+     Lives at body level, outside the main content flow, so its z-index can
+     properly stack above the fixed navbar — main establishes its own
+     stacking context, which would otherwise cap the lightbox below
+     nav/overlay elements regardless of its own z-index value. -->
+<div class="lightbox" aria-hidden="true">
+  <button class="lightbox__close" aria-label="Close">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+  </button>
+  <button class="lightbox__nav lightbox__nav--prev" aria-label="Previous photo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <button class="lightbox__nav lightbox__nav--next" aria-label="Next photo">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
+  <div class="lightbox__frame">
+    <div class="lightbox__media-wrap"></div>
+    <p class="lightbox__caption"></p>
+  </div>
+</div>
+
+<!-- ============================= GIRLFRIEND DAY SURPRISE ============================= -->
+<button type="button" class="gday-btn" id="gdayBtn" aria-haspopup="true" aria-expanded="false" aria-controls="gdayNote">
+  <svg class="gday-btn__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+    <path d="M12 8c0-2.2-1.8-4-4-4S4 5.8 4 8s1.8 4 4 4h4M12 8c0-2.2 1.8-4 4-4s4 1.8 4 4-1.8 4-4 4h-4M12 8v4m0 0c-2.2 0-4 1.8-4 4s1.8 4 4 4 4-1.8 4-4-1.8-4-4-4" stroke-linecap="round" stroke-linejoin="round"/>
+  </svg>
+  <span>Happy Girlfriend Day</span>
+</button>
+
+<div class="gday-note" id="gdayNote" role="dialog" aria-modal="false" aria-label="A little surprise note" aria-hidden="true">
+  <button class="gday-note__close" id="gdayNoteClose" aria-label="Close note">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6L6 18" stroke-linecap="round"/></svg>
+  </button>
+  <span class="gday-note__eyebrow">a little something</span>
+  <p class="gday-note__text">Happy Girlfriend Day. Out of every current, every tide, every version of my story — I'd still choose finding you, every single time, in every single lifetime.</p>
+</div>
+
+<!-- ============================= MUSIC PLAYER ============================= -->
+<!-- Player is dynamically injected by js/music-player.js -->
+
+<script src="config/settings.js"></script>
+<script src="js/cursor.js"></script>
+<script src="js/pin-lock.js"></script>
+<script src="js/config.js"></script>
+<script src="js/depth-fx.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/smooth-scroll.js"></script>
+<script src="js/navigation.js"></script>
+<script src="js/gallery.js"></script>
+<script src="js/letter.js"></script>
+<script src="js/music-player.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

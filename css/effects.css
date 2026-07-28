@@ -1,0 +1,137 @@
+/* ==========================================================================
+   EFFECTS — scroll-reveal utilities
+   (Ambient bubbles/motes are rendered on a single canvas by particles.js
+   for performance — see js/particles.js — so no DOM-based effect classes
+   are needed here.)
+   ========================================================================== */
+
+/* Section reveal helpers — used by smooth-scroll.js IntersectionObserver */
+.reveal {
+  opacity: 0;
+  transform: translateY(32px);
+  filter: blur(6px);
+  transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out), filter 0.9s var(--ease-out);
+}
+.reveal.is-visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+
+.reveal--fade { transform: none; }
+
+.reveal--scale { transform: scale(0.92); }
+.reveal--scale.is-visible { transform: scale(1); }
+
+.reveal--left { transform: translateX(-40px); }
+.reveal--left.is-visible { transform: translateX(0); }
+
+.reveal--right { transform: translateX(40px); }
+.reveal--right.is-visible { transform: translateX(0); }
+
+/* Stagger children utility (set --d on each child) */
+.reveal-stagger > * {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+  transition-delay: var(--d, 0s);
+}
+.reveal-stagger.is-visible > * { opacity: 1; transform: translateY(0); }
+
+/* ---- Girlfriend Day surprise button + note ---- */
+.gday-btn {
+  position: fixed;
+  right: var(--sp-4);
+  bottom: var(--sp-4);
+  z-index: var(--z-player);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.15rem;
+  border-radius: var(--radius-pill);
+  background: linear-gradient(135deg, rgba(255, 143, 189, 0.28), rgba(243, 207, 158, 0.22));
+  border: 1px solid var(--c-panel-border);
+  color: var(--c-foam);
+  font-family: var(--font-display);
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  backdrop-filter: blur(16px) saturate(150%);
+  -webkit-backdrop-filter: blur(16px) saturate(150%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 0 0 rgba(255, 143, 189, 0);
+  animation: gdayPulse 3.6s ease-in-out infinite;
+  transition: transform 0.35s var(--ease-soft), box-shadow 0.35s var(--ease-soft), background 0.35s var(--ease-soft);
+}
+.gday-btn:hover {
+  transform: translateY(-2px) scale(1.03);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3), 0 0 26px rgba(255, 143, 189, 0.35);
+}
+.gday-btn__icon { width: 18px; height: 18px; color: var(--c-bio-gold-soft); flex-shrink: 0; }
+
+@keyframes gdayPulse {
+  0%, 100% { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 0 0 rgba(255, 143, 189, 0); }
+  50%      { box-shadow: 0 8px 24px rgba(0, 0, 0, 0.25), 0 0 22px rgba(255, 143, 189, 0.32); }
+}
+
+.gday-note {
+  position: fixed;
+  right: var(--sp-4);
+  bottom: calc(var(--sp-4) + 62px);
+  z-index: calc(var(--z-player) + 1);
+  max-width: min(320px, calc(100vw - 2 * var(--sp-4)));
+  padding: var(--sp-4) var(--sp-4) var(--sp-3);
+  border-radius: var(--radius-md);
+  background: var(--c-panel-strong);
+  border: 1px solid var(--c-panel-border);
+  backdrop-filter: var(--panel-blur);
+  -webkit-backdrop-filter: var(--panel-blur);
+  box-shadow: var(--shadow-panel);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px) scale(0.96);
+  filter: blur(4px);
+  transition: opacity 0.45s var(--ease-out), transform 0.45s var(--ease-out), filter 0.45s var(--ease-out), visibility 0.45s;
+}
+.gday-note.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  filter: blur(0);
+}
+.gday-note__eyebrow {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: var(--fs-label);
+  letter-spacing: var(--tracking-wider);
+  text-transform: uppercase;
+  color: var(--c-bio-gold-soft);
+  margin-bottom: 0.5rem;
+}
+.gday-note__text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.02rem;
+  line-height: var(--lh-relaxed);
+  color: var(--c-foam);
+}
+.gday-note__close {
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  width: 28px;
+  height: 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--c-foam-dim);
+  border-radius: 50%;
+  transition: background 0.3s var(--ease-out), color 0.3s var(--ease-out);
+}
+.gday-note__close:hover { background: rgba(255, 255, 255, 0.08); color: var(--c-foam); }
+.gday-note__close svg { width: 14px; height: 14px; }
+
+@media (max-width: 640px) {
+  .gday-btn span { display: none; }
+  .gday-btn { padding: 0.7rem; }
+  .gday-note { bottom: calc(var(--sp-3) + 56px); right: var(--sp-3); left: var(--sp-3); max-width: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gday-btn { animation: none; }
+}
