@@ -24,9 +24,30 @@
 
 /* Backdrop-filter blur is expensive on low-power/mobile GPUs (especially
    Safari) — ease it back on small screens where panels are also smaller
-   and the visual difference is negligible. */
+   and the visual difference is negligible. Also covers the navbar/gallery/
+   loader components that use hardcoded blur values instead of the shared
+   --panel-blur variable, since a fixed/sticky element with a heavy
+   backdrop-filter is one of the main causes of stiff, dropped-frame
+   scrolling on mobile Safari. */
 @media (max-width: 600px), (max-height: 600px) {
   :root { --panel-blur: blur(12px) saturate(130%); }
+
+  .navbar.is-scrolled {
+    backdrop-filter: blur(10px) saturate(130%);
+    -webkit-backdrop-filter: blur(10px) saturate(130%);
+  }
+  .lightbox {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .music-player__card {
+    backdrop-filter: blur(12px) saturate(140%);
+    -webkit-backdrop-filter: blur(12px) saturate(140%);
+  }
+  .music-player__fab {
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+  }
 }
 
 /* Landscape phones: shrink min-heights so content isn't cropped */

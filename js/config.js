@@ -12,9 +12,19 @@
   const isCoarsePointer      = window.matchMedia('(pointer: coarse)').matches;
   const isSmallScreen        = window.innerWidth < 720;
 
+  // Rough low-end-hardware signal: few CPU cores and/or little RAM, as
+  // reported by the device itself. Not all browsers expose these (Safari
+  // doesn't), so this only ever pushes tier *down* — it never overrides
+  // screen-size/pointer-type detection, it just catches the case of a
+  // low-power device with a larger screen (e.g. an older budget tablet).
+  const isLowEndHardware =
+    (typeof navigator.hardwareConcurrency === 'number' && navigator.hardwareConcurrency <= 4) ||
+    (typeof navigator.deviceMemory === 'number' && navigator.deviceMemory <= 4);
+
   function getPerfTier() {
     if (prefersReducedMotion)                      return 'off';
     if (isSmallScreen || isCoarsePointer)          return 'low';
+    if (isLowEndHardware)                          return 'low';
     if (window.innerWidth < 1280)                  return 'mid';
     return 'high';
   }

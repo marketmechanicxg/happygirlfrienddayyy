@@ -48,82 +48,140 @@
   max-width: 54ch;
 }
 
-.ending__candles {
+/* ---- Romantic glowing heart centerpiece (replaces the old candles) ----
+   A main pulsing/glowing heart sits at the center as the focal point,
+   surrounded by small tappable "wish" hearts. Tapping each small heart
+   releases it (it floats up, glows, and fades) — mirroring the old
+   "blow out each candle" interaction and its "all done" pay-off. */
+.ending__hearts {
   margin-top: var(--sp-6);
-  display: flex;
-  align-items: flex-end;
-  gap: var(--sp-3);
-  justify-content: center;
   position: relative;
+  width: 220px;
+  height: 180px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.ending__candles::after {
-  content: '';
+.ending__heart-glow {
   position: absolute;
-  bottom: -10px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 70%;
-  height: 24px;
-  background: radial-gradient(ellipse, rgba(243,207,158,0.22), transparent 75%);
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 55%, rgba(255, 143, 189, 0.28), transparent 68%);
+  filter: blur(4px);
   pointer-events: none;
   transition: opacity 0.6s ease;
+  animation: heartGlowPulse 3.2s ease-in-out infinite;
 }
 
-.ending__candles.is-all-out::after {
-  opacity: 0;
+.ending__hearts.is-all-out .ending__heart-glow {
+  animation: heartGlowBloom 1.2s ease-out;
+  opacity: 1;
 }
 
-.candle {
-  width: 14px;
-  height: 60px;
-  border-radius: 6px;
-  background: linear-gradient(180deg, #fff7e6, var(--c-bio-gold));
-  box-shadow: inset -2px 0 4px rgba(0,0,0,0.12);
+@keyframes heartGlowPulse {
+  0%, 100% { opacity: 0.7; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.06); }
+}
+
+@keyframes heartGlowBloom {
+  0% { opacity: 0.8; transform: scale(1); }
+  40% { opacity: 1; transform: scale(1.35); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+.heart-wish__center {
   position: relative;
-  cursor: pointer;
-  transition: background 0.4s ease;
+  width: 58px;
+  height: 53px;
+  animation: heartbeat 2.4s ease-in-out infinite;
+  filter: drop-shadow(0 0 14px rgba(255, 143, 189, 0.65)) drop-shadow(0 0 28px rgba(255, 194, 221, 0.35));
 }
 
-.candle.is-out {
-  background: linear-gradient(180deg, rgba(255,255,255,0.2), rgba(243,207,158,0.4));
+.heart-wish__center-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
 }
 
-.candle:nth-child(1) { height: 48px; }
-.candle:nth-child(2) { height: 62px; }
-.candle:nth-child(3) { height: 70px; }
-.candle:nth-child(4) { height: 58px; }
-.candle:nth-child(5) { height: 50px; }
-
-.candle::before {
+/* SVG can't take a CSS gradient directly on fill, so use a solid base
+   tone here and layer a soft radial highlight on top via ::after below. */
+.heart-wish__center-svg path {
+  fill: #ff8fbd;
+}
+.heart-wish__center::after {
   content: '';
   position: absolute;
-  top: -16px;
+  inset: 6px 8px 10px 8px;
+  background: radial-gradient(circle at 35% 28%, rgba(255,255,255,0.55), transparent 55%);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 29'%3E%3Cpath d='M16 28.5S1.2 19.4 1.2 9.6C1.2 4.3 5.4 0.5 10.3 0.5c3 0 5.4 1.5 5.7 4 0.3-2.5 2.7-4 5.7-4 4.9 0 9.1 3.8 9.1 9.1 0 9.8-14.8 18.9-14.8 18.9z'/%3E%3C/svg%3E") center/contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 29'%3E%3Cpath d='M16 28.5S1.2 19.4 1.2 9.6C1.2 4.3 5.4 0.5 10.3 0.5c3 0 5.4 1.5 5.7 4 0.3-2.5 2.7-4 5.7-4 4.9 0 9.1 3.8 9.1 9.1 0 9.8-14.8 18.9-14.8 18.9z'/%3E%3C/svg%3E") center/contain no-repeat;
+  pointer-events: none;
+}
+
+.ending__hearts.is-all-out .heart-wish__center {
+  animation: heartbeat 2.4s ease-in-out infinite, heartCelebrate 0.7s ease-out;
+}
+
+@keyframes heartbeat {
+  0%, 100% { transform: scale(1) translateY(0); }
+  15% { transform: scale(1.1) translateY(-2px); }
+  30% { transform: scale(0.98) translateY(0); }
+  45% { transform: scale(1.06) translateY(-1px); }
+  60% { transform: scale(1) translateY(0); }
+}
+
+@keyframes heartCelebrate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.4) rotate(-4deg); }
+  100% { transform: scale(1); }
+}
+
+/* Small orbiting "wish" hearts — tap each to release it, same beat as the
+   old candle-blow interaction. --i (0..4) drives placement + timing. */
+.heart-wish {
+  --angle: calc(-90deg + (var(--i) * 72deg));
+  position: absolute;
+  top: 50%;
   left: 50%;
-  transform: translateX(-50%);
-  width: 10px;
-  height: 16px;
-  background: radial-gradient(circle, #fff7c2, var(--c-bio-gold) 70%, transparent 100%);
-  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
-  animation: flicker 1.4s ease-in-out infinite alternate;
-  filter: blur(0.3px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  width: 20px;
+  height: 18px;
+  margin: -9px 0 0 -10px;
+  cursor: pointer;
+  transform: rotate(var(--angle)) translate(78px) rotate(calc(-1 * var(--angle)));
+  animation: heartOrbitFloat 3.6s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.18s);
+  transition: opacity 0.45s ease, transform 0.45s ease;
 }
 
-.candle.is-out::before {
+.heart-wish::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #ffc2dd;
+  clip-path: path('M10 18S0.6 12.1 0.6 6.2C0.6 2.9 3.1 0.6 6 0.6c1.9 0 3.4 0.9 4 2.2 0.6-1.3 2.1-2.2 4-2.2 2.9 0 5.4 2.3 5.4 5.6C19.4 12.1 10 18 10 18z');
+  filter: drop-shadow(0 0 6px rgba(255, 143, 189, 0.55));
+  transition: background 0.35s ease, opacity 0.5s ease, transform 0.6s ease, filter 0.35s ease;
+}
+
+.heart-wish:hover::before {
+  transform: scale(1.12);
+}
+
+@keyframes heartOrbitFloat {
+  0%, 100% { margin-top: -9px; }
+  50% { margin-top: -15px; }
+}
+
+.heart-wish.is-out {
+  cursor: default;
+  animation: none;
   opacity: 0;
-  transform: translateX(-50%) scale(0) rotate(0deg);
+  transform: rotate(var(--angle)) translate(78px) rotate(calc(-1 * var(--angle))) translateY(-46px) scale(0.4);
 }
 
-.candle:nth-child(2)::before { animation-delay: 0.2s; }
-.candle:nth-child(3)::before { animation-delay: 0.4s; }
-.candle:nth-child(4)::before { animation-delay: 0.1s; }
-.candle:nth-child(5)::before { animation-delay: 0.3s; }
-
-@keyframes flicker {
-  0% { transform: translateX(-50%) scale(1) rotate(-2deg); opacity: 1; }
-  50% { transform: translateX(-50%) scale(1.1) rotate(2deg); opacity: 0.85; }
-  100% { transform: translateX(-50%) scale(0.95) rotate(-1deg); opacity: 1; }
+.heart-wish.is-out::before {
+  background: #fff2f8;
+  opacity: 0;
 }
 
 .ending__signoff {

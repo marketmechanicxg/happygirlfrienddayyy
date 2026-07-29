@@ -20,9 +20,18 @@
     'rgba(255, 235, 224,'    // cream
   ];
 
-  // Floating love emoji — kept to a soft, coordinated palette so nothing
-  // reads as a random emoji sticker dropped on top of the design.
-  const HEART_EMOJI = ['❤️', '💕', '💗', '💖', '💘', '💝'];
+  // Floating hearts — soft, coordinated palette. Drawn as a vector path
+  // (see drawHeart) rather than an emoji glyph: emoji-font rendering on
+  // canvas is inconsistent across mobile browsers/OS versions (some
+  // render blank/tofu glyphs), which was the root cause of the floating
+  // hearts effect being barely visible on mobile. A drawn path always
+  // renders identically everywhere.
+  const HEART_COLORS = [
+    'rgba(255, 143, 189,',   // rose
+    'rgba(255, 175, 205,',   // blush pink
+    'rgba(255, 207, 228,',   // soft pink
+    'rgba(255, 105, 160,'    // deeper pink
+  ];
 
   const supportsCanvasFilter = (function () {
     try {
@@ -48,14 +57,16 @@
     // to the original budget per tier so mobile/low-power devices don't
     // pay for the new romantic layers — we just spend the same budget on
     // a richer mix instead of adding more DOM/canvas work overall.
-    const COUNTS = { low: 24, mid: 42, high: 64 };
+    const COUNTS = { low: 30, mid: 42, high: 64 };
     const particleCount = COUNTS[tier] || 32;
 
     // Weighted kind mix: petal, heart, mote (soft glow), sparkle (twinkle).
-    // Low tier trims hearts/sparkles slightly since emoji glyphs + glow
-    // shadows are marginally pricier per-draw than a plain ellipse.
+    // Low tier (mostly mobile) actually leans *into* hearts more than mid,
+    // since the whole point of the effect on a small screen is "I can see
+    // hearts floating here" at a glance — petals/motes read as generic
+    // ambience and are easy to miss on a phone.
     const KIND_WEIGHTS = {
-      low:  { petal: 0.40, heart: 0.24, mote: 0.20, sparkle: 0.16 },
+      low:  { petal: 0.26, heart: 0.42, mote: 0.16, sparkle: 0.16 },
       mid:  { petal: 0.34, heart: 0.30, mote: 0.18, sparkle: 0.18 },
       high: { petal: 0.30, heart: 0.32, mote: 0.18, sparkle: 0.20 }
     };
@@ -120,13 +131,17 @@
         });
       } else if (kind === 'heart') {
         Object.assign(base, {
-          emoji: HEART_EMOJI[(Math.random() * HEART_EMOJI.length) | 0],
-          r: OCEAN.utils.lerp(10, 22, depth) * OCEAN.utils.rand(0.85, 1.15),
-          speed: OCEAN.utils.lerp(3.5, 11, depth),
+          color: HEART_COLORS[(Math.random() * HEART_COLORS.length) | 0],
+          // Floor kept fairly high (9px, 0.32 alpha) so even a "far depth"
+          // heart still clearly reads on a small mobile screen — the old
+          // lerp(10,22)/lerp(0.22,0.6) range let far hearts get too small
+          // and faint to notice there at all.
+          r: OCEAN.utils.lerp(9, 20, depth) * OCEAN.utils.rand(0.9, 1.15),
+          speed: OCEAN.utils.lerp(4, 11, depth),
           sway: OCEAN.utils.rand(0.2, 0.6),
           swayAmp: OCEAN.utils.rand(14, 38),
-          alpha: OCEAN.utils.lerp(0.22, 0.6, depth),
-          blur: supportsCanvasFilter ? OCEAN.utils.lerp(2.4, 0, depth) : 0,
+          alpha: OCEAN.utils.lerp(0.32, 0.68, depth),
+          blur: supportsCanvasFilter ? OCEAN.utils.lerp(1.6, 0, depth) : 0,
           mouseInfluence: OCEAN.utils.lerp(0.015, 0.09, depth)
         });
       } else if (kind === 'mote') {
@@ -190,18 +205,37 @@
     function drawHeart(p, x, alphaMul) {
       const alpha = OCEAN.utils.clamp(p.alpha * (alphaMul == null ? 1 : alphaMul), 0, 1);
       if (alpha <= 0.01) return;
+      const s = p.r; // half-width scale for the heart path
       ctx.save();
       if (p.blur) ctx.filter = `blur(${p.blur}px)`;
-      ctx.globalAlpha = alpha;
-      ctx.font = `${p.r}px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif`;
-      ctx.textAlign = 'center';
-      ctx.textBaseline = 'middle';
       ctx.translate(x, p.y);
       ctx.rotate(p.rot * 0.12); // faint tilt only, keeps hearts readable
-      ctx.fillText(p.emoji, 0, 0);
+
+      // Soft glow behind the heart so it reads clearly against any
+      // background — this is what carries the effect on mobile, where
+      // there's no hover/cursor interaction to draw the eye.
+      ctx.shadowColor = `${p.color}${Math.min(alpha + 0.2, 1)})`;
+      ctx.shadowBlur = s * 0.9;
+      ctx.fillStyle = `${p.color}${alpha})`;
+
+      drawHeartLobes(s);
+      ctx.fill();
+
       ctx.restore();
       ctx.globalAlpha = 1;
+      ctx.shadowBlur = 0;
       ctx.filter = 'none';
+    }
+
+    // Symmetric heart shape built from two mirrored lobes meeting at a
+    // bottom point — simple, cheap (one fill call), and unmistakably a
+    // heart at any size.
+    function drawHeartLobes(s) {
+      ctx.beginPath();
+      ctx.moveTo(0, s * 0.62);
+      ctx.bezierCurveTo(-s * 0.9, -s * 0.02, -s * 0.5, -s * 0.78, 0, -s * 0.22);
+      ctx.bezierCurveTo(s * 0.5, -s * 0.78, s * 0.9, -s * 0.02, 0, s * 0.62);
+      ctx.closePath();
     }
 
     function drawSparkle(p, x, alpha) {
@@ -336,7 +370,9 @@
           age: 0,
           cycleDur: life,
           maxAlpha: OCEAN.utils.rand(0.6, 0.9),
-          color: Math.random() > 0.5 ? '255,255,255' : '255,207,228'
+          color: kind === 'heart'
+            ? HEART_COLORS[(Math.random() * HEART_COLORS.length) | 0]
+            : (Math.random() > 0.5 ? '255,255,255' : '255,207,228')
         }));
       }
     }

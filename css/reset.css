@@ -8,7 +8,6 @@ html {
   -webkit-text-size-adjust: 100%;
   scroll-behavior: auto; /* JS-driven smooth scroll handles this; avoid double-smoothing */
   background: var(--c-abyss);
-  scroll-snap-type: y proximity;
   cursor: none;
 }
 
@@ -145,7 +144,6 @@ html { scrollbar-color: var(--c-bio-cyan) var(--c-abyss); scrollbar-width: thin;
 @media (hover: none) and (pointer: coarse) {
   html, body {
     cursor: auto;
-    scroll-snap-type: none; /* Mobile scroll snap can be annoying sometimes, let's keep it clean */
   }
   .custom-cursor-dot, .custom-cursor-glow {
     display: none;

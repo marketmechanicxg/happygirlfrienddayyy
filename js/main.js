@@ -199,9 +199,12 @@
       });
     }
 
-    // Candle blow out interaction
-    const candles = document.querySelectorAll('.candle');
-    const candlesContainer = document.querySelector('.ending__candles');
+    // Romantic heart-wish interaction — tap each small heart to release it
+    // toward the glowing centerpiece heart; once all are released, the
+    // center heart blooms and the "wish granted" pay-off plays, same beat
+    // as the old candle-blow interaction.
+    const heartWishes = document.querySelectorAll('.heart-wish');
+    const heartsContainer = document.querySelector('.ending__hearts');
     const signoff = document.querySelector('.ending__signoff');
     const whatsappBtnWrap = document.querySelector('.ending__whatsapp');
     const whatsappBtn = document.getElementById('whatsapp-reply-btn');
@@ -213,14 +216,18 @@
       whatsappBtn.href = `https://wa.me/${num}?text=${msg}`;
     }
     
-    let blownOut = 0;
-    candles.forEach(candle => {
-      candle.addEventListener('click', () => {
-        if (!candle.classList.contains('is-out')) {
-          candle.classList.add('is-out');
-          blownOut++;
-          if (blownOut === candles.length) {
-            candlesContainer?.classList.add('is-all-out');
+    let released = 0;
+    heartWishes.forEach(heart => {
+      heart.addEventListener('click', () => {
+        if (!heart.classList.contains('is-out')) {
+          heart.classList.add('is-out');
+          released++;
+          if (!OCEAN.config.prefersReducedMotion && OCEAN.effects?.burstAt) {
+            const rect = heart.getBoundingClientRect();
+            OCEAN.effects.burstAt(rect.left + rect.width / 2, rect.top + rect.height / 2, 6, { hearts: true });
+          }
+          if (released === heartWishes.length) {
+            heartsContainer?.classList.add('is-all-out');
             if (signoff) {
               signoff.style.opacity = '0';
               setTimeout(() => {

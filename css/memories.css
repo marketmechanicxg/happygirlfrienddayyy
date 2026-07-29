@@ -40,7 +40,6 @@
   opacity: 0;
   transform: translateY(36px);
   transition: opacity 0.9s var(--ease-out), transform 0.9s var(--ease-out);
-  scroll-snap-align: center;
 }
 
 .memory-item.is-visible { opacity: 1; transform: translateY(0); }

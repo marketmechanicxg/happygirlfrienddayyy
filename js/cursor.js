@@ -51,7 +51,7 @@
     requestAnimationFrame(render);
 
     // Add interactive state when hovering over clickable elements
-    const clickables = document.querySelectorAll('a, button, input, .candle, .letter__bottle-stage, .gallery__item');
+    const clickables = document.querySelectorAll('a, button, input, .heart-wish, .letter__bottle-stage, .gallery__item');
     clickables.forEach(el => {
       el.addEventListener('mouseenter', () => {
         cursorDot.classList.add('is-hovering');
